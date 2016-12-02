@@ -15,8 +15,9 @@ import java.util.List;
 
 import static com.algolia.search.Defaults.ALGOLIANET_COM;
 import static com.algolia.search.Defaults.ALGOLIA_NET;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.AdditionalMatchers.and;
 import static org.mockito.Mockito.*;
 
 public class AlgoliaHttpClientTest {
@@ -177,7 +178,7 @@ public class AlgoliaHttpClientTest {
 
   private AlgoliaHttpResponse makeMockRequest() throws IOException {
     return mockClient.request(
-      any(AlgoliaHttpRequest.class)
+      notNull(AlgoliaHttpRequest.class)
     );
   }
 
@@ -216,7 +217,7 @@ public class AlgoliaHttpClientTest {
     }
 
     @Override
-    public AlgoliaHttpResponse request(@Nonnull AlgoliaHttpRequest request) throws IOException {
+    public AlgoliaHttpResponse request(AlgoliaHttpRequest request) throws IOException {
       return null;
     }
 

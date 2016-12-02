@@ -10,7 +10,7 @@ public class Indices {
   private List<Index.Attributes> items;
 
   public List<Index.Attributes> getItems() {
-    return items == null ? new ArrayList<>() : items;
+    return items == null ? new ArrayList<Index.Attributes>() : items;
   }
 
   @SuppressWarnings("unused")

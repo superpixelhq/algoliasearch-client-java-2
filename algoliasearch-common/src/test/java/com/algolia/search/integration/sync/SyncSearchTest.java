@@ -14,14 +14,17 @@ import com.algolia.search.objects.Query;
 import com.algolia.search.responses.MultiQueriesResult;
 import com.algolia.search.responses.SearchFacetResult;
 import com.algolia.search.responses.SearchResult;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -38,7 +41,13 @@ abstract public class SyncSearchTest extends SyncAlgoliaIntegrationTest {
   @Before
   @After
   public void cleanUp() throws AlgoliaException {
-    List<BatchOperation> clean = indicesNames.stream().map(BatchDeleteIndexOperation::new).collect(Collectors.toList());
+//    List<BatchOperation> clean = indicesNames.stream().map(BatchDeleteIndexOperation::new).collect(Collectors.toList());
+    List<BatchOperation> clean = Lists.newArrayList(Iterables.transform(indicesNames, new Function<String, BatchOperation>() {
+      @Override
+      public BatchOperation apply(@Nullable String indexName) {
+        return new BatchDeleteIndexOperation(indexName);
+      }
+    }));
     client.batch(clean).waitForCompletion();
   }
 

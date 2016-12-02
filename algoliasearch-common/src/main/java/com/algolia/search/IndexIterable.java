@@ -3,8 +3,6 @@ package com.algolia.search;
 import com.algolia.search.objects.Query;
 
 import java.util.Iterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class IndexIterable<T> implements Iterable<T> {
 
@@ -31,13 +29,13 @@ public class IndexIterable<T> implements Iterable<T> {
   public String getCursor() {
     return iterator.getCursor();
   }
-
-  /**
-   * Get a stream from this iterable
-   *
-   * @return a Stream
-   */
-  public Stream<T> stream() {
-    return StreamSupport.stream(spliterator(), false);
-  }
+//
+//  /**
+//   * Get a stream from this iterable
+//   *
+//   * @return a Stream
+//   */
+//  public Stream<T> stream() {
+//    return StreamSupport.stream(spliterator(), false);
+//  }
 }

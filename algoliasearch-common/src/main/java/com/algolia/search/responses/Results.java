@@ -8,7 +8,7 @@ public class Results<T> {
   private List<T> results;
 
   public List<T> getResults() {
-    return results == null ? new ArrayList<>() : results;
+    return results == null ? new ArrayList<T>() : results;
   }
 
   @SuppressWarnings("unused")

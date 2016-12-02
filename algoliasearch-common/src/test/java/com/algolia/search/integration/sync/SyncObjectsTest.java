@@ -7,6 +7,7 @@ import com.algolia.search.Index;
 import com.algolia.search.exceptions.AlgoliaException;
 import com.algolia.search.inputs.BatchOperation;
 import com.algolia.search.inputs.batch.BatchDeleteIndexOperation;
+import com.google.common.base.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -121,7 +121,7 @@ abstract public class SyncObjectsTest extends SyncAlgoliaIntegrationTest {
 
     index.deleteObject("1").waitForCompletion();
 
-    assertThat(index.getObject("1")).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("1"))).isEmpty();
   }
 
   @Test
@@ -135,8 +135,8 @@ abstract public class SyncObjectsTest extends SyncAlgoliaIntegrationTest {
 
     index.deleteObjects(Arrays.asList("1", "2")).waitForCompletion();
 
-    assertThat(index.getObject("1")).isEmpty();
-    assertThat(index.getObject("2")).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("1"))).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("2"))).isEmpty();
   }
 
   @Test
@@ -152,4 +152,7 @@ abstract public class SyncObjectsTest extends SyncAlgoliaIntegrationTest {
     assertThat(objects.get(0)).isEqualToComparingFieldByField(new AlgoliaObjectWithID("1", null, 5));
   }
 
+  private <T> java.util.Optional<T> fromGuavaOptional(Optional<T> gOpt) {
+    return java.util.Optional.ofNullable(gOpt.orNull());
+  }
 }

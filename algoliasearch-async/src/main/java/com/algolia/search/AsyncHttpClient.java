@@ -2,12 +2,12 @@ package com.algolia.search;
 
 import com.algolia.search.http.AlgoliaRequest;
 import com.algolia.search.http.AsyncAlgoliaHttpClient;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import net.javacrumbs.futureconverter.java8guava.FutureConverter;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Callable;
 
 class AsyncHttpClient extends AsyncAlgoliaHttpClient {
 
@@ -20,8 +20,13 @@ class AsyncHttpClient extends AsyncAlgoliaHttpClient {
   }
 
   @Override
-  public <T> CompletableFuture<T> requestWithRetry(@Nonnull AlgoliaRequest<T> request) {
-    return FutureConverter.toCompletableFuture(service.submit(() -> client.requestWithRetry(request)));
+  public <T> ListenableFuture<T> requestWithRetry(@Nonnull final AlgoliaRequest<T> request) {
+    return service.submit(new Callable<T>() {
+      @Override
+      public T call() throws Exception {
+        return client.requestWithRetry(request);
+      }
+    });
   }
 
 }

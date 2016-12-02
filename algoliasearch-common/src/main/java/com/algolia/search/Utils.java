@@ -4,6 +4,9 @@ import com.algolia.search.exceptions.AlgoliaException;
 import com.algolia.search.objects.Query;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.annotation.Nonnull;
 import javax.crypto.Mac;
@@ -13,8 +16,7 @@ import java.io.Reader;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.concurrent.CompletableFuture;
+
 
 public class Utils {
 
@@ -43,7 +45,9 @@ public class Utils {
     String queryStr = query.toParam();
     String key = hmac(privateApiKey, queryStr);
 
-    return new String(Base64.getEncoder().encode(String.format("%s%s", key, queryStr).getBytes(Charset.forName("UTF8"))));
+    //TODO Java8 uses RFC 2045, Guava uses RFC 4648 -> apache uses RCC 2045, but is a whole new import
+//    return new String(Base64.getEncoder().encode(String.format("%s%s", key, queryStr).getBytes(Charset.forName("UTF8"))));
+    return BaseEncoding.base64().encode(String.format("%s%s", key, queryStr).getBytes(Charset.forName("UTF8")));
   }
 
   public static <T> T parseAs(ObjectMapper mapper, Reader content, Class<T> klass) throws IOException {
@@ -54,10 +58,11 @@ public class Utils {
     return mapper.readValue(content, type);
   }
 
-  public static <T> CompletableFuture<T> completeExceptionally(Throwable t) {
-    CompletableFuture<T> future = new CompletableFuture<>();
-    future.completeExceptionally(t);
-    return future;
+  public static <T> ListenableFuture<T> completeExceptionally(Throwable t) {
+//    CompletableFuture<T> future = new CompletableFuture<>();
+//    future.completeExceptionally(t);
+//    return future;
+    return Futures.immediateFailedFuture(t);
   }
 
 }

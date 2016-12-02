@@ -3,6 +3,8 @@ package com.algolia.search;
 import com.algolia.search.exceptions.AlgoliaException;
 import com.algolia.search.objects.Query;
 import org.junit.Test;
+import net.javacrumbs.futureconverter.java8guava.FutureConverter;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +23,7 @@ public class UtilsTest {
 
   @Test
   public void completeExceptionally() {
-    assertThat(Utils.completeExceptionally(new NullPointerException())).isCompletedExceptionally();
+    assertThat(FutureConverter.toCompletableFuture(Utils.completeExceptionally(new NullPointerException()))).isCompletedExceptionally();
   }
 
 }

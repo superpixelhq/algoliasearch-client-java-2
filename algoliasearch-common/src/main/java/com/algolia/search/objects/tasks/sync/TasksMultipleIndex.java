@@ -2,6 +2,7 @@ package com.algolia.search.objects.tasks.sync;
 
 import com.algolia.search.APIClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.base.Optional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,15 @@ public class TasksMultipleIndex extends GenericTask<Map<String, Long>> {
   @SuppressWarnings("OptionalGetWithoutIsPresent")
   @Override
   public Long getTaskIDToWaitFor() {
-    return getTaskID().values().stream().max(Comparator.comparingLong(Long::longValue)).get();
+    Optional<Long> max = Optional.absent();
+    for (Long value : getTaskID().values()) {
+      if (!max.isPresent() ||
+              max.get() < value) {
+        max = Optional.of(value);
+      }
+    }
+
+    //Exception better? This method used to call get on Java8 with no check and suppress the warning.
+    return max.isPresent() ? max.get() : null;
   }
 }

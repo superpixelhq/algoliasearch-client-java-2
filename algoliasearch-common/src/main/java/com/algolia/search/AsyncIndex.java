@@ -12,12 +12,12 @@ import com.algolia.search.objects.tasks.async.AsyncTask;
 import com.algolia.search.objects.tasks.async.AsyncTaskIndexing;
 import com.algolia.search.objects.tasks.async.AsyncTaskSingleIndex;
 import com.algolia.search.responses.*;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @SuppressWarnings("WeakerAccess")
 public class AsyncIndex<T> extends AbstractIndex {
@@ -55,7 +55,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskIndexing> addObject(@Nonnull T object) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskIndexing> addObject(@Nonnull T object) throws AlgoliaException {
     return client.addObject(name, object);
   }
 
@@ -68,7 +68,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskIndexing> addObject(@Nonnull String objectID, @Nonnull T object) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskIndexing> addObject(@Nonnull String objectID, @Nonnull T object) throws AlgoliaException {
     return client.addObject(name, objectID, object);
   }
 
@@ -79,7 +79,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskSingleIndex> addObjects(@Nonnull List<T> objects) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> addObjects(@Nonnull List<T> objects) throws AlgoliaException {
     return client.addObjects(name, objects);
   }
 
@@ -90,7 +90,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return The object
    * @throws AlgoliaException
    */
-  public CompletableFuture<Optional<T>> getObject(@Nonnull String objectID) throws AlgoliaException {
+  public ListenableFuture<Optional<T>> getObject(@Nonnull String objectID) throws AlgoliaException {
     return client.getObject(name, objectID, klass);
   }
 
@@ -101,7 +101,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the list of objects
    * @throws AlgoliaException
    */
-  public CompletableFuture<List<T>> getObjects(@Nonnull List<String> objectIDs) throws AlgoliaException {
+  public ListenableFuture<List<T>> getObjects(@Nonnull List<String> objectIDs) throws AlgoliaException {
     return client.getObjects(name, objectIDs, klass);
   }
 
@@ -113,7 +113,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the list of objects
    * @throws AlgoliaException
    */
-  public CompletableFuture<List<T>> getObjects(@Nonnull List<String> objectIDs, @Nonnull List<String> attributesToRetrieve) throws AlgoliaException {
+  public ListenableFuture<List<T>> getObjects(@Nonnull List<String> objectIDs, @Nonnull List<String> attributesToRetrieve) throws AlgoliaException {
     return client.getObjects(name, objectIDs, attributesToRetrieve, klass);
   }
 
@@ -146,7 +146,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> delete() throws AlgoliaException {
+  public ListenableFuture<AsyncTask> delete() throws AlgoliaException {
     return client.deleteIndex(name);
   }
 
@@ -156,7 +156,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> clear() throws AlgoliaException {
+  public ListenableFuture<AsyncTask> clear() throws AlgoliaException {
     return client.clearIndex(name);
   }
 
@@ -168,7 +168,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> saveObject(@Nonnull String objectID, @Nonnull T object) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> saveObject(@Nonnull String objectID, @Nonnull T object) throws AlgoliaException {
     return client.saveObject(name, objectID, object);
   }
 
@@ -179,7 +179,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskSingleIndex> saveObjects(@Nonnull List<T> objects) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> saveObjects(@Nonnull List<T> objects) throws AlgoliaException {
     return client.saveObjects(name, objects);
   }
 
@@ -190,7 +190,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> deleteObject(@Nonnull String objectID) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> deleteObject(@Nonnull String objectID) throws AlgoliaException {
     return client.deleteObject(name, objectID);
   }
 
@@ -201,7 +201,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskSingleIndex> deleteObjects(@Nonnull List<String> objectIDs) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> deleteObjects(@Nonnull List<String> objectIDs) throws AlgoliaException {
     return client.deleteObjects(name, objectIDs);
   }
 
@@ -211,7 +211,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the settings
    * @throws AlgoliaException
    */
-  public CompletableFuture<IndexSettings> getSettings() throws AlgoliaException {
+  public ListenableFuture<IndexSettings> getSettings() throws AlgoliaException {
     return client.getSettings(name);
   }
 
@@ -222,7 +222,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> setSettings(@Nonnull IndexSettings settings) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> setSettings(@Nonnull IndexSettings settings) throws AlgoliaException {
     return setSettings(settings, false);
   }
 
@@ -234,7 +234,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the related AsyncTask
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> setSettings(@Nonnull IndexSettings settings, @Nonnull Boolean forwardToReplicas) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> setSettings(@Nonnull IndexSettings settings, @Nonnull Boolean forwardToReplicas) throws AlgoliaException {
     return client.setSettings(name, settings, forwardToReplicas);
   }
 
@@ -244,7 +244,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the list of keys
    * @throws AlgoliaException
    */
-  public CompletableFuture<List<ApiKey>> listKeys() throws AlgoliaException {
+  public ListenableFuture<List<ApiKey>> listKeys() throws AlgoliaException {
     return client.listKeys(name);
   }
 
@@ -255,7 +255,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the key
    * @throws AlgoliaException
    */
-  public CompletableFuture<Optional<ApiKey>> getKey(@Nonnull String key) throws AlgoliaException {
+  public ListenableFuture<Optional<ApiKey>> getKey(@Nonnull String key) throws AlgoliaException {
     return client.getKey(name, key);
   }
 
@@ -266,7 +266,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the deleted key
    * @throws AlgoliaException
    */
-  public CompletableFuture<DeleteKey> deleteKey(@Nonnull String key) throws AlgoliaException {
+  public ListenableFuture<DeleteKey> deleteKey(@Nonnull String key) throws AlgoliaException {
     return client.deleteKey(name, key);
   }
 
@@ -277,7 +277,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the created key
    * @throws AlgoliaException
    */
-  public CompletableFuture<CreateUpdateKey> addKey(@Nonnull ApiKey key) throws AlgoliaException {
+  public ListenableFuture<CreateUpdateKey> addKey(@Nonnull ApiKey key) throws AlgoliaException {
     return client.addKey(name, key);
   }
 
@@ -289,7 +289,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the updated key
    * @throws AlgoliaException
    */
-  public CompletableFuture<CreateUpdateKey> updateKey(@Nonnull String keyName, @Nonnull ApiKey key) throws AlgoliaException {
+  public ListenableFuture<CreateUpdateKey> updateKey(@Nonnull String keyName, @Nonnull ApiKey key) throws AlgoliaException {
     return client.updateKey(name, keyName, key);
   }
 
@@ -300,7 +300,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return The task associated
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> moveTo(@Nonnull String dstIndexName) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> moveTo(@Nonnull String dstIndexName) throws AlgoliaException {
     return client.moveIndex(name, dstIndexName);
   }
 
@@ -311,7 +311,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return The task associated
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> copyTo(@Nonnull String dstIndexName) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> copyTo(@Nonnull String dstIndexName) throws AlgoliaException {
     return client.copyIndex(name, dstIndexName);
   }
 
@@ -322,7 +322,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the result of the search, or a failed Future if the index does not exists
    * @throws AlgoliaException
    */
-  public CompletableFuture<SearchResult<T>> search(@Nonnull Query query) throws AlgoliaException {
+  public ListenableFuture<SearchResult<T>> search(@Nonnull Query query) throws AlgoliaException {
     return client.search(name, query, klass);
   }
 
@@ -335,7 +335,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the result of the search
    * @throws AlgoliaException
    */
-  public CompletableFuture<SearchFacetResult> searchFacet(@Nonnull String facetName, @Nonnull String facetQuery, Query query) throws AlgoliaException {
+  public ListenableFuture<SearchFacetResult> searchFacet(@Nonnull String facetName, @Nonnull String facetQuery, Query query) throws AlgoliaException {
     return client.searchFacet(name, facetName, facetQuery, query);
   }
 
@@ -347,7 +347,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the result of the search
    * @throws AlgoliaException
    */
-  public CompletableFuture<SearchFacetResult> searchFacet(@Nonnull String facetName, @Nonnull String facetQuery) throws AlgoliaException {
+  public ListenableFuture<SearchFacetResult> searchFacet(@Nonnull String facetName, @Nonnull String facetQuery) throws AlgoliaException {
     return this.searchFacet(facetName, facetQuery, null);
   }
 
@@ -361,7 +361,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @throws AlgoliaException
    * @see BatchOperation & subclasses
    */
-  public CompletableFuture<AsyncTaskSingleIndex> batch(@Nonnull List<BatchOperation> operations) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> batch(@Nonnull List<BatchOperation> operations) throws AlgoliaException {
     return client.batch(name, operations);
   }
 
@@ -374,7 +374,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @throws AlgoliaException
    * @see PartialUpdateOperation & subclasses
    */
-  public CompletableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull String objectID, @Nonnull Object object) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull String objectID, @Nonnull Object object) throws AlgoliaException {
     return client.partialUpdateObject(name, objectID, object);
   }
 
@@ -385,7 +385,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTaskSingleIndex> partialUpdateObjects(@Nonnull List<Object> objects) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> partialUpdateObjects(@Nonnull List<Object> objects) throws AlgoliaException {
     return client.partialUpdateObjects(name, objects);
   }
 
@@ -397,7 +397,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @throws AlgoliaException
    * @see PartialUpdateOperation & subclasses
    */
-  public CompletableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull PartialUpdateOperation operation) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull PartialUpdateOperation operation) throws AlgoliaException {
     return partialUpdateObject(operation, true);
   }
 
@@ -410,7 +410,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @throws AlgoliaException
    * @see PartialUpdateOperation & subclasses
    */
-  public CompletableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull PartialUpdateOperation operation, boolean createIfNotExists) throws AlgoliaException {
+  public ListenableFuture<AsyncTaskSingleIndex> partialUpdateObject(@Nonnull PartialUpdateOperation operation, boolean createIfNotExists) throws AlgoliaException {
     return client.partialUpdateObject(name, operation, createIfNotExists);
   }
 
@@ -422,7 +422,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content) throws AlgoliaException {
     return saveSynonym(synonymID, content, false);
   }
 
@@ -435,7 +435,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content, boolean forwardToReplicas) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content, boolean forwardToReplicas) throws AlgoliaException {
     return saveSynonym(synonymID, content, forwardToReplicas, false);
   }
 
@@ -449,7 +449,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content, boolean forwardToReplicas, boolean replaceExistingSynonyms) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> saveSynonym(@Nonnull String synonymID, @Nonnull AbstractSynonym content, boolean forwardToReplicas, boolean replaceExistingSynonyms) throws AlgoliaException {
     return client.saveSynonym(name, synonymID, content, forwardToReplicas, replaceExistingSynonyms);
   }
 
@@ -460,7 +460,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<Optional<AbstractSynonym>> getSynonym(@Nonnull String synonymID) throws AlgoliaException {
+  public ListenableFuture<Optional<AbstractSynonym>> getSynonym(@Nonnull String synonymID) throws AlgoliaException {
     return client.getSynonym(name, synonymID);
   }
 
@@ -471,7 +471,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> deleteSynonym(@Nonnull String synonymID) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> deleteSynonym(@Nonnull String synonymID) throws AlgoliaException {
     return deleteSynonym(synonymID, false);
   }
 
@@ -483,7 +483,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> deleteSynonym(@Nonnull String synonymID, boolean forwardToReplicas) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> deleteSynonym(@Nonnull String synonymID, boolean forwardToReplicas) throws AlgoliaException {
     return client.deleteSynonym(name, synonymID, forwardToReplicas);
   }
 
@@ -493,7 +493,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> clearSynonyms() throws AlgoliaException {
+  public ListenableFuture<AsyncTask> clearSynonyms() throws AlgoliaException {
     return clearSynonyms(false);
   }
 
@@ -503,7 +503,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> clearSynonyms(boolean forwardToReplicas) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> clearSynonyms(boolean forwardToReplicas) throws AlgoliaException {
     return client.clearSynonyms(name, forwardToReplicas);
   }
 
@@ -514,7 +514,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the results of the query
    * @throws AlgoliaException
    */
-  public CompletableFuture<SearchSynonymResult> searchSynonyms(@Nonnull SynonymQuery query) throws AlgoliaException {
+  public ListenableFuture<SearchSynonymResult> searchSynonyms(@Nonnull SynonymQuery query) throws AlgoliaException {
     return client.searchSynonyms(name, query);
   }
 
@@ -527,7 +527,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms, boolean forwardToReplicas, boolean replaceExistingSynonyms) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms, boolean forwardToReplicas, boolean replaceExistingSynonyms) throws AlgoliaException {
     return client.batchSynonyms(name, synonyms, forwardToReplicas, replaceExistingSynonyms);
   }
 
@@ -539,7 +539,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms, boolean forwardToReplicas) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms, boolean forwardToReplicas) throws AlgoliaException {
     return batchSynonyms(synonyms, forwardToReplicas, false);
   }
 
@@ -550,7 +550,7 @@ public class AsyncIndex<T> extends AbstractIndex {
    * @return the associated task
    * @throws AlgoliaException
    */
-  public CompletableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms) throws AlgoliaException {
+  public ListenableFuture<AsyncTask> batchSynonyms(@Nonnull List<AbstractSynonym> synonyms) throws AlgoliaException {
     return batchSynonyms(synonyms, false, false);
   }
 

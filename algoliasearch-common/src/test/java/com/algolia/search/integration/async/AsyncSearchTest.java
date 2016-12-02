@@ -25,7 +25,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import net.javacrumbs.futureconverter.java8guava.FutureConverter;
+
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 abstract public class AsyncSearchTest extends AsyncAlgoliaIntegrationTest {
 
@@ -78,7 +82,7 @@ abstract public class AsyncSearchTest extends AsyncAlgoliaIntegrationTest {
   @Test
   public void searchOnNonExistingIndex() throws AlgoliaException, ExecutionException, InterruptedException {
     AsyncIndex<AlgoliaObject> index = client.initIndex("index3", AlgoliaObject.class);
-    CompletableFuture<SearchResult<AlgoliaObject>> search = index.search(new Query(("")));
+    CompletableFuture<SearchResult<AlgoliaObject>> search = FutureConverter.toCompletableFuture(index.search(new Query((""))));
     while (!search.isDone()) {
       Thread.sleep(1000);
     }

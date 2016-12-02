@@ -1,7 +1,7 @@
 package com.algolia.search.exceptions;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Algolia Exception if all retries failed
@@ -14,8 +14,18 @@ public class AlgoliaHttpRetriesException extends AlgoliaException {
   private List<AlgoliaIOException> ioExceptionList;
 
   public AlgoliaHttpRetriesException(String message, List<AlgoliaIOException> ioExceptionList) {
-    super(message + ", exceptions: [" + String.join(",", ioExceptionList.stream().map(Throwable::getMessage).collect(Collectors.toList())) + "]");
+    super(message + ", exceptions: [" + combineMessages(ioExceptionList) + "]");
     this.ioExceptionList = ioExceptionList;
+  }
+
+  private static String combineMessages(List<AlgoliaIOException> ioExceptionList) {
+    StringBuilder sb = new StringBuilder();
+    Iterator<AlgoliaIOException> it = ioExceptionList.iterator();
+    while (it.hasNext()) {
+      sb.append(it.next().getMessage());
+      if (it.hasNext()) sb.append(",");
+    }
+    return sb.toString();
   }
 
   @SuppressWarnings("unused")

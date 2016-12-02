@@ -8,14 +8,17 @@ import com.algolia.search.inputs.synonym.AbstractSynonym;
 import com.algolia.search.inputs.synonym.Synonym;
 import com.algolia.search.objects.SynonymQuery;
 import com.algolia.search.responses.SearchSynonymResult;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +34,13 @@ abstract public class AsyncSynonymsTest extends AsyncAlgoliaIntegrationTest {
   @Before
   @After
   public void cleanUp() throws Exception {
-    List<BatchOperation> clean = indicesNames.stream().map(BatchDeleteIndexOperation::new).collect(Collectors.toList());
+//    List<BatchOperation> clean = indicesNames.stream().map(BatchDeleteIndexOperation::new).collect(Collectors.toList());
+    List<BatchOperation> clean = Lists.newArrayList(Iterables.transform(indicesNames, new Function<String, BatchOperation>() {
+      @Override
+      public BatchOperation apply(@Nullable String indexName) {
+        return new BatchDeleteIndexOperation(indexName);
+      }
+    }));
     waitForCompletion(client.batch(clean));
   }
 
@@ -82,7 +91,7 @@ abstract public class AsyncSynonymsTest extends AsyncAlgoliaIntegrationTest {
     Synonym syn1 = new Synonym().setObjectID("syn1").setSynonyms(a);
     Synonym syn2 = new Synonym().setObjectID("syn2").setSynonyms(b);
 
-    waitForCompletion(index.batchSynonyms(Arrays.asList(syn1, syn2)));
+    waitForCompletion(index.batchSynonyms(Arrays.<AbstractSynonym>asList(syn1, syn2)));
 
     SearchSynonymResult searchResult = index.searchSynonyms(new SynonymQuery("")).get();
     assertThat(searchResult.getHits()).hasSize(2);

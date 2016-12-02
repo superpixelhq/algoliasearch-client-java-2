@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Joiner;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -97,7 +98,7 @@ class RemoveStopWordsSerializer extends JsonSerializer<RemoveStopWords> {
       gen.writeBoolean((Boolean) value.getInsideValue());
     } else if (value instanceof RemoveStopWordsListString) {
       List<String> list = (List<String>) value.getInsideValue();
-      gen.writeString(String.join(",", list));
+      gen.writeString(Joiner.on(",").join(list));
     }
   }
 }

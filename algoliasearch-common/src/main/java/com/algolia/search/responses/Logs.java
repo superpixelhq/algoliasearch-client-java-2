@@ -10,7 +10,7 @@ public class Logs {
   private List<Log> logs;
 
   public List<Log> getLogs() {
-    return logs == null ? new ArrayList<>() : logs;
+    return logs == null ? new ArrayList<Log>() : logs;
   }
 
   @SuppressWarnings("unused")

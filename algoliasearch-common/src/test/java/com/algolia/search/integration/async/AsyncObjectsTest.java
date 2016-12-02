@@ -6,6 +6,8 @@ import com.algolia.search.AsyncAlgoliaIntegrationTest;
 import com.algolia.search.AsyncIndex;
 import com.algolia.search.inputs.BatchOperation;
 import com.algolia.search.inputs.batch.BatchDeleteIndexOperation;
+import com.google.common.base.Optional;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +15,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -119,7 +120,7 @@ abstract public class AsyncObjectsTest extends AsyncAlgoliaIntegrationTest {
 
     waitForCompletion(index.deleteObject("1"));
 
-    assertThat(index.getObject("1").get()).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("1").get())).isEmpty();
   }
 
   @Test
@@ -133,8 +134,8 @@ abstract public class AsyncObjectsTest extends AsyncAlgoliaIntegrationTest {
 
     waitForCompletion(index.deleteObjects(Arrays.asList("1", "2")));
 
-    assertThat(index.getObject("1").get()).isEmpty();
-    assertThat(index.getObject("2").get()).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("1").get())).isEmpty();
+    assertThat(fromGuavaOptional(index.getObject("2").get())).isEmpty();
   }
 
   @Test
@@ -146,10 +147,13 @@ abstract public class AsyncObjectsTest extends AsyncAlgoliaIntegrationTest {
       new AlgoliaObjectWithID("2", "algolia1", 5)
     )));
 
-    CompletableFuture<List<AlgoliaObject>> result = index.getObjects(Collections.singletonList("1"), Collections.singletonList("age"));
+    ListenableFuture<List<AlgoliaObject>> result = index.getObjects(Collections.singletonList("1"), Collections.singletonList("age"));
 
     futureAssertThat(result).hasSize(1);
     futureAssertThat(result).extracting("name").containsNull();
   }
 
+  private <T> java.util.Optional<T> fromGuavaOptional(Optional<T> gOpt) {
+    return java.util.Optional.ofNullable(gOpt.orNull());
+  }
 }

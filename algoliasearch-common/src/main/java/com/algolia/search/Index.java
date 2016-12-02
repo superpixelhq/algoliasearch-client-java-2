@@ -12,12 +12,12 @@ import com.algolia.search.objects.tasks.sync.Task;
 import com.algolia.search.objects.tasks.sync.TaskIndexing;
 import com.algolia.search.objects.tasks.sync.TaskSingleIndex;
 import com.algolia.search.responses.*;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("WeakerAccess")
 public class Index<T> extends AbstractIndex<T> {

@@ -10,13 +10,13 @@ import com.algolia.search.inputs.batch.BatchClearIndexOperation;
 import com.algolia.search.inputs.batch.BatchDeleteIndexOperation;
 import com.algolia.search.inputs.batch.BatchUpdateObjectOperation;
 import com.algolia.search.objects.Query;
+import com.google.common.base.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -123,5 +123,4 @@ abstract public class SyncBatchTest extends SyncAlgoliaIntegrationTest {
       return this;
     }
   }
-
 }

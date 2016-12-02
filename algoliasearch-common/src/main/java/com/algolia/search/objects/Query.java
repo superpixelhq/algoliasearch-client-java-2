@@ -1,6 +1,7 @@
 package com.algolia.search.objects;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.UnsupportedEncodingException;
@@ -212,7 +213,7 @@ public class Query {
     if (attributes == null || attributes.isEmpty()) {
       return builder;
     }
-    return builder.put(name, String.join(",", attributes));
+    return builder.put(name, Joiner.on(",").join(attributes));
   }
 
   public String toParam() {

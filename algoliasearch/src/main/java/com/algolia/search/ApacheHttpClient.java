@@ -4,6 +4,10 @@ import com.algolia.search.http.AlgoliaHttpClient;
 import com.algolia.search.http.AlgoliaHttpRequest;
 import com.algolia.search.http.AlgoliaHttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
@@ -15,13 +19,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ApacheHttpClient extends AlgoliaHttpClient {
 
@@ -32,8 +36,14 @@ public class ApacheHttpClient extends AlgoliaHttpClient {
   private final List<String> buildHosts;
 
   public ApacheHttpClient(APIClientConfiguration configuration) {
-    List<Header> httpHeaders = configuration.getHeaders().entrySet().stream().map(e -> new BasicHeader(e.getKey(), e.getValue())).collect(Collectors.toList());
-    RequestConfig requestConfig = RequestConfig
+//    List<Header> httpHeaders = configuration.getHeaders().entrySet().stream().map(e -> new BasicHeader(e.getKey(), e.getValue())).collect(Collectors.toList());
+    List<Header> httpHeaders = Lists.newArrayList(Iterables.transform(configuration.getHeaders().entrySet(), new Function<Map.Entry<String, String>, Header>() {
+      @Override public Header apply(@Nullable Map.Entry<String, String> header) {
+        return new BasicHeader(header.getKey(), header.getValue());
+      }
+    }));
+
+            RequestConfig requestConfig = RequestConfig
       .custom()
       .setConnectTimeout(configuration.getConnectTimeout())
       .setSocketTimeout(configuration.getReadTimeout())
@@ -55,7 +65,7 @@ public class ApacheHttpClient extends AlgoliaHttpClient {
   protected AlgoliaHttpResponse request(@Nonnull AlgoliaHttpRequest request) throws IOException {
     RequestBuilder builder = RequestBuilder
       .create(request.getMethod().name)
-      .setUri("https://" + request.getHost() + "/" + String.join("/", request.getPath()));
+      .setUri("https://" + request.getHost() + "/" + Joiner.on("/").join(request.getPath()));
 
     for (Map.Entry<String, String> entry : request.getParameters().entrySet()) {
       builder = builder.addParameter(entry.getKey(), entry.getValue());

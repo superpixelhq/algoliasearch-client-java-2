@@ -6,6 +6,7 @@ import org.apache.http.conn.DnsResolver;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 class TimeoutableHostNameResolver implements DnsResolver {
@@ -23,13 +24,19 @@ class TimeoutableHostNameResolver implements DnsResolver {
   }
 
   @Override
-  public InetAddress[] resolve(String hostname) throws UnknownHostException {
+  public InetAddress[] resolve(final String hostname) throws UnknownHostException {
     try {
       return timeLimiter.callWithTimeout(
-        () -> new InetAddress[]{InetAddress.getByName(hostname)},
-        timeout,
-        TimeUnit.MILLISECONDS,
-        true
+//        () -> new InetAddress[]{InetAddress.getByName(hostname)},
+              new Callable<InetAddress[]>() {
+                @Override
+                public InetAddress[] call() throws Exception {
+                  return new InetAddress[]{InetAddress.getByName(hostname)};
+                }
+              },
+              timeout,
+              TimeUnit.MILLISECONDS,
+              true
       );
     } catch (Exception e) {
       throw new UnknownHostException(hostname);

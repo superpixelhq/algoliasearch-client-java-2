@@ -57,6 +57,6 @@ public class BrowseResult<T> {
   }
 
   public static <T> BrowseResult<T> empty() {
-    return new BrowseResult<T>().setCursor(null).setHits(Collections.emptyList());
+    return new BrowseResult<T>().setCursor(null).setHits(Collections.<T>emptyList());
   }
 }

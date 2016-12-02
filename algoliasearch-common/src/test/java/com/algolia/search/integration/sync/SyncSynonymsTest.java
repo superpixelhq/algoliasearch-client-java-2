@@ -9,13 +9,13 @@ import com.algolia.search.inputs.synonym.AbstractSynonym;
 import com.algolia.search.inputs.synonym.Synonym;
 import com.algolia.search.objects.SynonymQuery;
 import com.algolia.search.responses.SearchSynonymResult;
+import com.google.common.base.Optional;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;

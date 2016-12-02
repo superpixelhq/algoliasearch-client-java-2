@@ -43,6 +43,15 @@ public class IndexIterator<T> implements Iterator<T> {
     return currentIterator.next();
   }
 
+  @Override
+  public void remove() {
+    if (currentIterator == null || !currentIterator.hasNext()) {
+      executeQueryAndSetInnerState();
+      isFirstRequest = false;
+    }
+    currentIterator.remove();
+  }
+
   private void executeQueryAndSetInnerState() {
     BrowseResult<T> browseResult = doQuery(currentCursor);
     currentCursor = browseResult.getCursor();

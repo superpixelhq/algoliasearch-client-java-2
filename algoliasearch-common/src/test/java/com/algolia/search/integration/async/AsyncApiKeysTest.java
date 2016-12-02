@@ -6,6 +6,7 @@ import com.algolia.search.AsyncIndex;
 import com.algolia.search.inputs.BatchOperation;
 import com.algolia.search.inputs.batch.BatchDeleteIndexOperation;
 import com.algolia.search.objects.ApiKey;
+import com.google.common.util.concurrent.ListenableFuture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -36,7 +36,7 @@ abstract public class AsyncApiKeysTest extends AsyncAlgoliaIntegrationTest {
   private void waitForKeyPresent(AsyncIndex<AlgoliaObject> index, String description) throws Exception {
     for (int i = 0; i < 100; i++) {
       Thread.sleep(1000);
-      CompletableFuture<List<ApiKey>> apiKeys = index == null ? client.listKeys() : index.listKeys();
+      ListenableFuture<List<ApiKey>> apiKeys = index == null ? client.listKeys() : index.listKeys();
       boolean found = apiKeys.get(WAIT_TIME_IN_SECONDS, SECONDS).stream().map(ApiKey::getDescription).anyMatch(k -> k.equals(description));
       if (found) {
         return;
@@ -50,7 +50,7 @@ abstract public class AsyncApiKeysTest extends AsyncAlgoliaIntegrationTest {
   private void waitForKeyNotPresent(AsyncIndex<AlgoliaObject> index, String description) throws Exception {
     for (int i = 0; i < 100; i++) {
       Thread.sleep(1000);
-      CompletableFuture<List<ApiKey>> apiKeys = index == null ? client.listKeys() : index.listKeys();
+      ListenableFuture<List<ApiKey>> apiKeys = index == null ? client.listKeys() : index.listKeys();
       boolean found = apiKeys.get(WAIT_TIME_IN_SECONDS, SECONDS).stream().map(ApiKey::getDescription).anyMatch(k -> k.equals(description));
       if (!found) {
         return;
