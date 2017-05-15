@@ -94,7 +94,7 @@ class AppEngineHttpClient extends AlgoliaHttpClient {
     }
 
     if (request.hasContent()) {
-      httpRequest.setPayload(request.getContent().getBytes());
+      httpRequest.setPayload(request.getContent().getBytes(UTF8));
     }
 
     return httpRequest;
